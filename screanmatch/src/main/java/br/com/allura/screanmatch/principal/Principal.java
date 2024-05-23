@@ -7,11 +7,10 @@ import br.com.allura.screanmatch.model.Episodeo;
 import br.com.allura.screanmatch.service.ConsumoApi;
 import br.com.allura.screanmatch.service.ConverteDados;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 public class Principal {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
@@ -95,6 +94,13 @@ public class Principal {
                         Collectors.averagingDouble(Episodeo::getAvaliacao)));
 
         System.out.println(avaliacoesPorTemporada);
+
+        DoubleSummaryStatistics est = episodeos.stream()
+                .filter(e -> e.getAvaliacao()>0.0)
+                .collect(Collectors.summarizingDouble(Episodeo::getAvaliacao));
+        System.out.println("Media: "+est.getAverage());
+        System.out.println("Avaliação minima: "+est.getMin());
+        System.out.println("Avaliação maxima: "+est.getMax());
 
     }
 
